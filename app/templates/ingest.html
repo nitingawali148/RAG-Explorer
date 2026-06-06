@@ -1,0 +1,45 @@
+{% extends "_base.html" %}
+{% set active = 'ingest' %}
+{% block title %}Ingest · RAG Explorer{% endblock %}
+{% block content %}
+<section class="hero">
+  <h2>Knowledge base</h2>
+  <p class="lede">{{ stats.chunks }} chunks pre-loaded from {{ stats.sources|length }} ShopSphere documents. The corpus is built in-memory at startup — no ingestion step needed.</p>
+</section>
+
+<section class="grid-2">
+  <div class="card">
+    <h3>Loaded documents</h3>
+    <ul class="src-list">
+      {% for f in available_files %}<li><code>{{ f }}</code><span class="count">{{ stats.sources[f] }} chunks</span></li>{% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Corpus summary</h3>
+    <table class="kv">
+      <tr><th>Total chunks</th><td>{{ stats.chunks }}</td></tr>
+      <tr><th>Search engine</th><td>BM25 (rank_bm25)</td></tr>
+      <tr><th>Index type</th><td>In-memory, no persistence needed</td></tr>
+      <tr><th>Cold start</th><td>&lt; 100 ms</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="row spread">
+    <h3>All chunks ({{ chunks|length }})</h3>
+  </div>
+  <div class="chunks">
+    {% for c in chunks %}
+    <article class="chunk">
+      <header>
+        <span class="chunk-id mono">{{ c.id }}</span>
+        <span class="src mono">{{ c.source }}</span>
+        <span class="meta mono">chunk {{ c.metadata.index }}</span>
+      </header>
+      <p>{{ c.text }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
