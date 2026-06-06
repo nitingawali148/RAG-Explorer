@@ -15,7 +15,7 @@ def search(query: str, top_k: int = 4) -> list[dict]:
     ranked = sorted(enumerate(scores), key=lambda x: x[1], reverse=True)[:top_k]
     results = []
     for idx, score in ranked:
-        if score > 0:
+        if score > 1.0:
             chunk = CHUNKS[idx].copy()
             chunk["score"] = round(float(score), 4)
             results.append(chunk)
